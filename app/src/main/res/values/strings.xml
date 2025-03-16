@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">DriveNext</string>
+    <string name="splash_logo">splash_logo</string>
+    <string name="splash_screen_text">Поможем найти твою следующую поездку</string>
+    <string name="no_connection">Нет подключения \nк интернету</string>
+    <string name="check_connection">Проверьте подключение и повторите \nпопытку</string>
+    <string name="retry">Повторить попытку</string>
+    <string name="no_connection_image_1">no connection image 1</string>
+    <string name="no_connection_image_2">no connection image 2</string>
+    <string name="skip">Пропустить</string>
+</resources>
