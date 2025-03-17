@@ -8,4 +8,9 @@
     <string name="no_connection_image_1">no connection image 1</string>
     <string name="no_connection_image_2">no connection image 2</string>
     <string name="skip">Пропустить</string>
+    <string name="car_rent">Аренда автомобилей</string>
+    <string name="onboarding1_text">Открой для себя удобный и доступный способ передвижения</string>
+    <string name="next">Далее</string>
+    <string name="onboarding1_main_image">onboarding1_main_image</string>
+    <string name="slider">slider</string>
 </resources>
