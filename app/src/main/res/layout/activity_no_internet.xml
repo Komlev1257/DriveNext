@@ -75,10 +75,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/btn_retry"
         android:layout_width="346dp"
         android:layout_height="54dp"
         android:layout_marginBottom="14dp"
         android:backgroundTint="#2A1246"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/retry"
         android:textColor="#FFFFFF"

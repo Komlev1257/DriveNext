@@ -13,4 +13,21 @@
     <string name="next">Далее</string>
     <string name="onboarding1_main_image">onboarding1_main_image</string>
     <string name="slider">slider</string>
+    <string name="onboarding2_main_image">onboarding2_main_image</string>
+    <string name="safe_and_comfortable">Безопасно и удобно</string>
+    <string name="onboarding2_text">Арендуй автомобиль и наслаждайся его удобством</string>
+    <string name="onboarding3_main_image">onboarding3_main_image</string>
+    <string name="best_offers">Лучшие предложения</string>
+    <string name="onboarding3_text">Выбирай понравившееся среди сотен доступных автомобилей</string>
+    <string name="lets_go">Поехали</string>
+    <string name="login">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="login_account">Войдите в аккаунт</string>
+    <string name="enter_data">Пожалуйста, введите свои данные</string>
+    <string name="email">Электронная почта</string>
+    <string name="enter_email">Введите электронную почту</string>
+    <string name="password">Пароль</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="forgot_pass">Забыли пароль?</string>
+    <string name="google">Войти через Google</string>
 </resources>

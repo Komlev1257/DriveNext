@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/onboarding1"
+    android:id="@+id/onboarding3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -36,8 +36,8 @@
         android:id="@+id/image_view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/onboarding1_main_image"
-        android:src="@drawable/ic_onboard1"
+        android:contentDescription="@string/onboarding3_main_image"
+        android:src="@drawable/ic_onboard3"
         android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,11 +63,11 @@
 
             <TextView
                 android:id="@+id/text_view2"
-                android:layout_width="290dp"
-                android:layout_height="29dp"
+                android:layout_width="305dp"
+                android:layout_height="30dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="start"
-                android:text="@string/car_rent"
+                android:text="@string/best_offers"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,12 +79,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_regular"
                 android:gravity="start"
-                android:text="@string/onboarding1_text"
+                android:text="@string/onboarding3_text"
                 android:textColor="#1A1A1A"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
-            
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,7 +101,7 @@
                 android:layout_height="50dp"
                 android:backgroundTint="#2A1246"
                 android:fontFamily="@font/montserrat_regular"
-                android:text="@string/next"
+                android:text="@string/lets_go"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 app:cornerRadius="14dp"
@@ -119,7 +119,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/ic_slider"/>
+                android:src="@drawable/ic_slider3"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
