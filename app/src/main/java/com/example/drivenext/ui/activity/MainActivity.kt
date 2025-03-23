@@ -1,4 +1,4 @@
-package com.example.drivenext
+package com.example.drivenext.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.drivenext.R
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")

@@ -1,4 +1,4 @@
-package com.example.drivenext
+package com.example.drivenext.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.example.drivenext.R
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -25,9 +26,9 @@ class SplashActivity : AppCompatActivity() {
         var accessToken = sharedPreferences.getString("access_token", null)
         accessToken = "str"
         val nextActivity = if (accessToken.isNullOrEmpty()) {
-            LoginActivity::class.java
+            GettingStartedActivity::class.java
         } else {
-            MainActivity::class.java
+            GettingStartedActivity::class.java
         }
 
         startActivity(Intent(this, nextActivity))
