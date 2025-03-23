@@ -30,4 +30,8 @@
     <string name="enter_password">Введите пароль</string>
     <string name="forgot_pass">Забыли пароль?</string>
     <string name="google">Войти через Google</string>
+    <string name="create_acc">Создать аккаунт</string>
+    <string name="create_pass">Придумайте пароль</string>
+    <string name="repeat_pass">Повторите пароль</string>
+    <string name="agreement">Я согласен с условиями обслуживания и политикой конфиденциальности</string>
 </resources>
