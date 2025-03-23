@@ -34,4 +34,25 @@
     <string name="create_pass">Придумайте пароль</string>
     <string name="repeat_pass">Повторите пароль</string>
     <string name="agreement">Я согласен с условиями обслуживания и политикой конфиденциальности</string>
+    <string name="lastname">Фамилия</string>
+    <string name="enter_lastname">Введите фамилию</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="name">Имя</string>
+    <string name="middlename">Отчество</string>
+    <string name="enter_middlename">Введите отчество</string>
+    <string name="birthday">Дата рождения</string>
+    <string name="date_format">DD/MM/YYYY</string>
+    <string name="gender">Пол</string>
+    <string name="female">Женский</string>
+    <string name="male">Мужской</string>
+    <string name="add_avatar">Добавление фотографии поможет владельцам и арендаторам узнать друг друга, когда они будут забирать машину</string>
+    <string name="driving_licence_number">Номер водительского удостоверения</string>
+    <string name="licence_hint">0000000000</string>
+    <string name="issue_date">Дата выдачи</string>
+    <string name="load_licence_photo">Загрузите фото водительского удостоверения</string>
+    <string name="load_passport_photo">Загрузите фото паспорта</string>
+    <string name="upload_photo">Загрузить фото</string>
+    <string name="enjoy">Пользуйтесь с удовольствием</string>
+    <string name="congratulations">Поздравляем</string>
+    <string name="registered">Вы успешно зарегистрировались.\nОбработка ваших персональных данных\nзаймет около двух часов. Спасибо за\nожидание.</string>
 </resources>
