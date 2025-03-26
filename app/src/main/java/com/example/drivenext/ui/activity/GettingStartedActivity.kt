@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import com.example.drivenext.R
 
-class GettingStartedActivity : AppCompatActivity() {
+class GettingStartedActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_getting_started)

@@ -8,13 +8,11 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.drivenext.R
 import java.util.Calendar
 
 
-class SignUpStep2Activity : AppCompatActivity() {
+class SignUpStep2Activity : BaseActivity() {
 
     private lateinit var editTextLastName: EditText
     private lateinit var editTextFirstName: EditText

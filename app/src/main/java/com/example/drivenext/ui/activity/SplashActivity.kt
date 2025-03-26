@@ -26,9 +26,9 @@ class SplashActivity : AppCompatActivity() {
         var accessToken = sharedPreferences.getString("access_token", null)
         accessToken = "str"
         val nextActivity = if (accessToken.isNullOrEmpty()) {
-            GettingStartedActivity::class.java
+            Onboarding1Activity::class.java
         } else {
-            GettingStartedActivity::class.java
+            Onboarding1Activity::class.java
         }
 
         startActivity(Intent(this, nextActivity))

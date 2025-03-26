@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.drivenext.R
 
-class SignUpStep1Activity : AppCompatActivity() {
+class SignUpStep1Activity : BaseActivity() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText

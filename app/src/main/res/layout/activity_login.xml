@@ -205,6 +205,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +215,9 @@
             android:textColor="#2A1246"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="14sp"
-            android:textFontWeight="500"/>
+            android:textFontWeight="500"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

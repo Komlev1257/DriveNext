@@ -26,11 +26,12 @@
         <activity android:name=".ui.activity.SignUpStep1Activity" />
         <activity android:name=".ui.activity.SignUpStep2Activity" />
         <activity android:name=".ui.activity.SignUpStep3Activity" />
-        <activity
-            android:name=".ui.activity.NoInternetActivity"
-            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
-            android:launchMode="singleInstance"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".ui.activity.BaseActivity" />
+        <activity android:name=".ui.activity.NoInternetActivity" />
+        <activity android:name=".ui.activity.Onboarding1Activity" />
+        <activity android:name=".ui.activity.Onboarding2Activity" />
+        <activity android:name=".ui.activity.Onboarding3Activity" />
+        <activity android:name=".ui.activity.CongratulationsActivity" />
     </application>
 
 </manifest>
