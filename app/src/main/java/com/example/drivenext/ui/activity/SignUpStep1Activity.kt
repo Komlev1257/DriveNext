@@ -2,13 +2,7 @@ package com.example.drivenext.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import com.example.drivenext.R
 
@@ -23,11 +17,13 @@ class SignUpStep1Activity : BaseActivity() {
     private lateinit var passwordVisibilityToggle2: ImageView
     private lateinit var termsCheckBox: CheckBox
 
+    private var isPasswordVisible1 = false
+    private var isPasswordVisible2 = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up1)
 
-        // Инициализация элементов
         emailEditText = findViewById(R.id.edit_text1)
         passwordEditText = findViewById(R.id.edit_text2)
         confirmPasswordEditText = findViewById(R.id.edit_text3)
@@ -37,30 +33,29 @@ class SignUpStep1Activity : BaseActivity() {
         passwordVisibilityToggle2 = findViewById(R.id.image_view2)
         termsCheckBox = findViewById(R.id.checkbox1)
 
-        // Устанавливаем обработчики для кнопки "Назад"
-        backButton.setOnClickListener {
-            onBackPressed()
-        }
+        backButton.setOnClickListener { onBackPressed() }
 
-        // Логика для кнопки "Далее"
         nextButton.setOnClickListener {
             if (validateFields()) {
-                // Перейти на следующий экран регистрации
-                val intent = Intent(this, SignUpStep2Activity::class.java)
+                // ✅ Передаём email и пароль на второй шаг
+                val intent = Intent(this, SignUpStep2Activity::class.java).apply {
+                    putExtra("email", emailEditText.text.toString().trim())
+                    putExtra("password", passwordEditText.text.toString().trim())
+                }
                 startActivity(intent)
             }
         }
 
-        // Логика показа/скрытия пароля
         passwordVisibilityToggle1.setOnClickListener {
-            togglePasswordVisibility(passwordEditText)
+            isPasswordVisible1 = !isPasswordVisible1
+            togglePasswordVisibility(passwordEditText, isPasswordVisible1)
         }
 
         passwordVisibilityToggle2.setOnClickListener {
-            togglePasswordVisibility(confirmPasswordEditText)
+            isPasswordVisible2 = !isPasswordVisible2
+            togglePasswordVisibility(confirmPasswordEditText, isPasswordVisible2)
         }
 
-        // Отслеживание изменений в полях ввода
         emailEditText.addTextChangedListener { enableNextButton() }
         passwordEditText.addTextChangedListener { enableNextButton() }
         confirmPasswordEditText.addTextChangedListener { enableNextButton() }
@@ -86,6 +81,11 @@ class SignUpStep1Activity : BaseActivity() {
             return false
         }
 
+        if (password.length < 6) {
+            showError("Пароль должен содержать минимум 6 символов.")
+            return false
+        }
+
         if (password != confirmPassword) {
             showError("Пароли не совпадают.")
             return false
@@ -103,12 +103,12 @@ class SignUpStep1Activity : BaseActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun togglePasswordVisibility(editText: EditText) {
-        if (editText.transformationMethod == null) {
-            editText.transformationMethod = android.text.method.PasswordTransformationMethod.getInstance()
+    private fun togglePasswordVisibility(editText: EditText, visible: Boolean) {
+        if (visible) {
+            editText.inputType = android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         } else {
-            editText.transformationMethod = null
+            editText.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
+        editText.setSelection(editText.text.length)
     }
 }
-

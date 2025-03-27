@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.0"
 clientAndroid = "1.3.3"
+core = "1.2.0"
 dotsindicator = "4.2"
 kotlin = "2.0.21"
 coreKtx = "1.15.0"
@@ -8,28 +9,46 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.6.1"
+ktorClientOkhttp = "2.3.7"
 material = "1.10.0"
 activity = "1.10.1"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.8.9"
 playServicesAuth = "21.3.0"
+roomRuntime = "2.6.1"
+storageKt = "2.2.1"
+supabase = "1.2.0"
+roomCommon = "2.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 auth-android = { module = "io.github.jan-tennert.supabase-kt:auth-android", version.ref = "clientAndroid" }
 client-android = { module = "io.github.jan-tennert.supabase-kt:client-android", version.ref = "clientAndroid" }
+core = { module = "io.github.jan-tennert.supabase-kt:core", version.ref = "core" }
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
+gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "storageKt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 postgrest-android = { module = "io.github.jan-tennert.supabase-kt:postgrest-android", version.ref = "clientAndroid" }
+postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "storageKt" }
+realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt", version.ref = "storageKt" }
 storage-android = { module = "io.github.jan-tennert.supabase-kt:storage-android", version.ref = "clientAndroid" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "storageKt" }
+storage = { module = "io.github.jan-tennert.supabase-kt:storage", version.ref = "supabase" }
+auth = { module = "io.github.jan-tennert.supabase-kt:auth", version.ref = "supabase" }
+postgrest = { module = "io.github.jan-tennert.supabase-kt:postgrest", version.ref = "supabase" }
+supabasecore = { module = "io.github.jan-tennert.supabase-kt:supabase-kt-core", version.ref = "supabase" }
+androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

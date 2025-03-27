@@ -1,16 +1,12 @@
 package com.example.drivenext.ui.activity
 
 import android.app.DatePickerDialog
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import com.example.drivenext.R
-import java.util.Calendar
-
+import java.util.*
 
 class SignUpStep2Activity : BaseActivity() {
 
@@ -23,11 +19,18 @@ class SignUpStep2Activity : BaseActivity() {
     private lateinit var radioFemale: RadioButton
     private lateinit var btnNext: View
 
+    // Данные из шага 1
+    private var email: String? = null
+    private var password: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up2)
 
-        // Инициализация элементов
+        // Получаем данные из SignUpStep1
+        email = intent.getStringExtra("email")
+        password = intent.getStringExtra("password")
+
         editTextLastName = findViewById(R.id.edit_text1)
         editTextFirstName = findViewById(R.id.edit_text2)
         editTextMiddleName = findViewById(R.id.edit_text3)
@@ -37,38 +40,33 @@ class SignUpStep2Activity : BaseActivity() {
         radioFemale = findViewById(R.id.radioFemale)
         btnNext = findViewById(R.id.btn_next)
 
-        // Обработка клика на кнопку "Next"
         btnNext.setOnClickListener {
             val lastName = editTextLastName.text.toString().trim()
             val firstName = editTextFirstName.text.toString().trim()
             val middleName = editTextMiddleName.text.toString().trim()
             val birthday = editTextBirthday.text.toString().trim()
-            val selectedGender = if (radioMale.isChecked) "Male" else "Female"
+            val selectedGender = if (radioMale.isChecked) "Male" else if (radioFemale.isChecked) "Female" else ""
 
-            // Проверка валидности введённых данных
-            if (lastName.isEmpty() || firstName.isEmpty() || middleName.isEmpty() || birthday.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            if (firstName.isEmpty() || lastName.isEmpty() || birthday.isEmpty() || selectedGender.isEmpty()) {
+                Toast.makeText(this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show()
             } else {
-                // В следующем шаге можно передать данные, если необходимо
                 val intent = Intent(this, SignUpStep3Activity::class.java).apply {
-                    putExtra("LAST_NAME", lastName)
-                    putExtra("FIRST_NAME", firstName)
-                    putExtra("MIDDLE_NAME", middleName)
-                    putExtra("BIRTHDAY", birthday)
-                    putExtra("GENDER", selectedGender)
+                    putExtra("email", email)
+                    putExtra("password", password)
+                    putExtra("firstName", firstName)
+                    putExtra("lastName", lastName)
+                    putExtra("middleName", middleName)
+                    putExtra("birthDate", birthday)
+                    putExtra("gender", selectedGender)
                 }
                 startActivity(intent)
             }
         }
 
-        // Обработка клика на поле ввода даты рождения
-        editTextBirthday.setOnClickListener {
-            openDatePicker()
-        }
+        editTextBirthday.setOnClickListener { openDatePicker() }
 
-        // Обработка кнопки "Назад"
         findViewById<View>(R.id.back_button).setOnClickListener {
-            onBackPressed() // Возвращает на предыдущий экран
+            onBackPressed()
         }
     }
 
@@ -78,12 +76,11 @@ class SignUpStep2Activity : BaseActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        // Открытие DatePickerDialog для выбора даты
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                editTextBirthday.setText(formattedDate) // Устанавливаем выбранную дату в поле
+                val formattedDate = "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
+                editTextBirthday.setText(formattedDate)
             },
             year,
             month,
@@ -92,4 +89,3 @@ class SignUpStep2Activity : BaseActivity() {
         datePickerDialog.show()
     }
 }
-

@@ -1,13 +1,17 @@
 package com.example.drivenext.ui.activity
 
 import android.app.AlertDialog
-import android.os.Bundle
-import com.example.drivenext.R
+import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.*
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import com.example.drivenext.R
+import com.example.drivenext.viewmodel.UserViewModel
 
 class LoginActivity : BaseActivity() {
 
@@ -22,8 +26,17 @@ class LoginActivity : BaseActivity() {
     private var email: String = ""
     private var password: String = ""
 
+    private val userViewModel: UserViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ✅ Проверяем сохранённый токен
+        if (getAuthToken() != null) {
+            goToMain()
+            return
+        }
+
         setContentView(R.layout.activity_login)
 
         emailEditText = findViewById(R.id.edit_text1)
@@ -40,28 +53,21 @@ class LoginActivity : BaseActivity() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            if (!isValidInfo(email, password)) {
-                return@setOnClickListener
-            }
-
+            if (!isValidInfo(email, password)) return@setOnClickListener
             login(email, password)
         }
 
         googleLoginButton.setOnClickListener { loginWithGoogle() }
-        registerTextView.isClickable = true
-        registerTextView.isFocusable = true
         registerTextView.setOnClickListener { navigateToRegister() }
         passwordVisibilityToggle.setOnClickListener { togglePasswordVisibility() }
     }
 
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             email = emailEditText.text.toString().trim()
             password = passwordEditText.text.toString().trim()
         }
-
         override fun afterTextChanged(s: Editable?) {}
     }
 
@@ -74,34 +80,35 @@ class LoginActivity : BaseActivity() {
             Toast.makeText(this, "Введите пароль", Toast.LENGTH_SHORT).show()
             return false
         }
-
         return true
     }
 
-
-
     private fun login(email: String, password: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        userViewModel.authenticate(email, password).observe(this) { user ->
+            if (user != null) {
+                val token = generateTokenForUser(user.email)
+                saveAuthToken(token)
+                goToMain()
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle("Ошибка входа")
+                    .setMessage("Неверный email или пароль")
+                    .setPositiveButton("OK", null)
+                    .show()
+            }
+        }
     }
 
     private fun loginWithGoogle() {
-        Toast.makeText(this, "Авторизация через Google", Toast.LENGTH_SHORT).show()
-
-        // Имитация успешного входа через Google
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        // Здесь должен быть Google Sign-In
+        val fakeToken = generateTokenForUser("google_user")
+        saveAuthToken(fakeToken)
+        goToMain()
     }
 
     private fun navigateToRegister() {
-        registerTextView.isClickable = true
-        registerTextView.isFocusable = true
-        registerTextView.setOnClickListener {
-            val intent = Intent(this, SignUpStep1Activity::class.java)
-            startActivity(intent)
-        }
+        val intent = Intent(this, SignUpStep1Activity::class.java)
+        startActivity(intent)
     }
 
     private fun togglePasswordVisibility() {
@@ -113,7 +120,29 @@ class LoginActivity : BaseActivity() {
             passwordEditText.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
             passwordVisibilityToggle.setImageResource(R.drawable.ic_eye)
         }
-        passwordEditText.setSelection(passwordEditText.text.length) // Устанавливаем курсор в конец
+        passwordEditText.setSelection(passwordEditText.text.length)
+    }
+
+    private fun goToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    // ✅ Генерация "токена"
+    private fun generateTokenForUser(email: String): String {
+        return email.hashCode().toString() + System.currentTimeMillis().toString()
+    }
+
+    // ✅ Сохранение токена
+    private fun saveAuthToken(token: String) {
+        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("access_token", token).apply()
+    }
+
+    // ✅ Получение токена
+    private fun getAuthToken(): String? {
+        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        return prefs.getString("access_token", null)
     }
 }
-

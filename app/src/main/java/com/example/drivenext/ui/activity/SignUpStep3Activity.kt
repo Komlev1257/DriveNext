@@ -1,15 +1,19 @@
 package com.example.drivenext.ui.activity
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.drivenext.R
+import com.example.drivenext.data.User
+import com.example.drivenext.viewmodel.UserViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.drivenext.R
 
 class SignUpStep3Activity : AppCompatActivity() {
 
@@ -24,7 +28,11 @@ class SignUpStep3Activity : AppCompatActivity() {
     private var licensePhotoUri: Uri? = null
     private var passportPhotoUri: Uri? = null
     private var avatarPhotoUri: Uri? = null
+
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    // ViewModel для сохранения пользователя
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +51,8 @@ class SignUpStep3Activity : AppCompatActivity() {
         btnUploadPassport.setOnClickListener { selectImage(REQUEST_PASSPORT_PHOTO) }
         btnAvatar.setOnClickListener { selectImage(REQUEST_AVATAR_PHOTO) }
         btnBack.setOnClickListener { finish() }
-        btnNext.setOnClickListener { validateAndProceed() }
+
+        btnNext.setOnClickListener { validateAndRegister() }
     }
 
     private fun showDatePicker() {
@@ -63,9 +72,13 @@ class SignUpStep3Activity : AppCompatActivity() {
     }
 
     private fun selectImage(requestCode: Int) {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
         startActivityForResult(intent, requestCode)
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -78,7 +91,7 @@ class SignUpStep3Activity : AppCompatActivity() {
         }
     }
 
-    private fun validateAndProceed() {
+    private fun validateAndRegister() {
         val licenseNumber = editTextLicenseNumber.text.toString().trim()
         val issueDate = editTextIssueDate.text.toString().trim()
 
@@ -87,21 +100,54 @@ class SignUpStep3Activity : AppCompatActivity() {
             return
         }
 
-        try {
-            dateFormat.parse(issueDate)
-        } catch (e: Exception) {
-            showToast("Введите корректную дату выдачи.")
+        if (licensePhotoUri == null || passportPhotoUri == null || avatarPhotoUri == null) {
+            showToast("Пожалуйста, загрузите все фотографии.")
             return
         }
 
-        if (licensePhotoUri == null || passportPhotoUri == null) {
-            showToast("Пожалуйста, загрузите все необходимые фото.")
-            return
-        }
+        // Получаем данные из intent
+        val email = intent.getStringExtra("email") ?: ""
+        val password = intent.getStringExtra("password") ?: ""
+        val firstName = intent.getStringExtra("firstName") ?: ""
+        val lastName = intent.getStringExtra("lastName") ?: ""
+        val middleName = intent.getStringExtra("middleName")
+        val birthDate = intent.getStringExtra("birthDate") ?: ""
+        val gender = intent.getStringExtra("gender") ?: ""
 
-        // Здесь можно передать данные на следующий экран или сохранить в ViewModel
-        showToast("Регистрация завершена!")
-        startActivity(Intent(this, GettingStartedActivity::class.java))
+        // Создаём объект User
+        val user = User(
+            firstName = firstName,
+            lastName = lastName,
+            middlename = middleName,
+            email = email,
+            password = password,
+            birthDate = birthDate,
+            gender = gender,
+            licenceNumber = licenseNumber,
+            licenceDate = issueDate,
+            profilePic = avatarPhotoUri.toString(),
+            licencePic = licensePhotoUri.toString(),
+            passportPic = passportPhotoUri.toString()
+        )
+
+        // Сохраняем пользователя в базу
+        userViewModel.insert(user)
+
+        // Сохраняем access token
+        saveAuthToken(generateToken(email))
+
+        // Переход в основную часть приложения
+        startActivity(Intent(this, CongratulationsActivity::class.java))
+        finish()
+    }
+
+    private fun saveAuthToken(token: String) {
+        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("access_token", token).apply()
+    }
+
+    private fun generateToken(email: String): String {
+        return email.hashCode().toString() + System.currentTimeMillis().toString()
     }
 
     private fun showToast(message: String) {
