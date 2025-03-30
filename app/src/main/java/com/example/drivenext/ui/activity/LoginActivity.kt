@@ -120,7 +120,7 @@ class LoginActivity : BaseActivity() {
         userViewModel.authenticate(email, password).observe(this) { user ->
             if (user != null) {
                 val token = generateTokenForUser(user.email)
-                saveAuthToken(token)
+                saveAuthToken(token, email)
                 goToMain()
             } else {
                 AlertDialog.Builder(this)
@@ -146,7 +146,7 @@ class LoginActivity : BaseActivity() {
                 userViewModel.authenticate(email, password).observe(this) { user ->
                     if (user != null) {
                         // ✅ Пользователь уже существует — вход
-                        saveAuthToken(generateTokenForUser(email))
+                        saveAuthToken(generateTokenForUser(email), email)
                         goToMain()
                     } else {
                         // 🆕 Новый пользователь — отправляем на шаг 2 регистрации
@@ -193,10 +193,14 @@ class LoginActivity : BaseActivity() {
     }
 
     // ✅ Сохранение токена
-    private fun saveAuthToken(token: String) {
+    private fun saveAuthToken(token: String, email: String) {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        prefs.edit() { putString("access_token", token) }
+        prefs.edit {
+            putString("access_token", token)
+            putString("user_email", email)
+        }
     }
+
 
     // ✅ Получение токена
     private fun getAuthToken(): Boolean? {

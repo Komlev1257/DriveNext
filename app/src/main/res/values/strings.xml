@@ -55,4 +55,6 @@
     <string name="enjoy">Пользуйтесь с удовольствием</string>
     <string name="congratulations">Поздравляем</string>
     <string name="registered">Вы успешно зарегистрировались.\nОбработка ваших персональных данных\nзаймет около двух часов. Спасибо за\nожидание.</string>
+    <string name="enter_auto">Введите марку автомобиля</string>
+    <string name="lets_find_auto">Давайте найдём автомобиль</string>
 </resources>

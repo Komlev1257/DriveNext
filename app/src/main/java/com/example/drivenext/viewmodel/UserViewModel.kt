@@ -56,4 +56,12 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    fun getUserByEmail(email: String): LiveData<User?> {
+        val result = MutableLiveData<User?>()
+        viewModelScope.launch {
+            result.postValue(repository.getUserByEmail(email))
+        }
+        return result
+    }
 }

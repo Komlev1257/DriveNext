@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
         val onboardingShown = sharedPreferences.getBoolean("onboarding_shown", false)
         val nextActivity = when {
             !onboardingShown -> Onboarding1Activity::class.java
-            !accessToken.isNullOrBlank() -> GettingStartedActivity::class.java
+            accessToken.isNullOrBlank() -> GettingStartedActivity::class.java
             else -> MainActivity::class.java
         }
 

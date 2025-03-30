@@ -21,6 +21,7 @@ roomRuntime = "2.6.1"
 storageKt = "2.2.1"
 supabase = "1.2.0"
 roomCommon = "2.6.1"
+constraintlayoutVersion = "2.2.1"
 
 
 [libraries]
@@ -53,6 +54,7 @@ auth = { module = "io.github.jan-tennert.supabase-kt:auth", version.ref = "supab
 postgrest = { module = "io.github.jan-tennert.supabase-kt:postgrest", version.ref = "supabase" }
 supabasecore = { module = "io.github.jan-tennert.supabase-kt:supabase-kt-core", version.ref = "supabase" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayoutVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -153,16 +153,19 @@ class SignUpStep3Activity : AppCompatActivity() {
         userViewModel.insert(user)
 
         // Сохраняем access token
-        saveAuthToken(generateToken(email))
+        saveAuthToken(generateToken(email), email)
 
         // Переход в основную часть приложения
         startActivity(Intent(this, CongratulationsActivity::class.java))
         finish()
     }
 
-    private fun saveAuthToken(token: String) {
+    private fun saveAuthToken(token: String, email: String) {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        prefs.edit() { putString("access_token", token) }
+        prefs.edit {
+            putString("access_token", token)
+            putString("user_email", email)
+        }
     }
 
     private fun generateToken(email: String): String {
