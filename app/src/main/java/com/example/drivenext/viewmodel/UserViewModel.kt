@@ -45,4 +45,15 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
         return authResult
     }
+
+    fun insertAndThen(user: User, onComplete: () -> Unit, onError: (Throwable) -> Unit) {
+        viewModelScope.launch {
+            try {
+                repository.insert(user)
+                onComplete()
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
+    }
 }

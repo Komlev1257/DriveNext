@@ -5,6 +5,7 @@ import com.example.drivenext.R
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.edit
 
 
 class Onboarding2Activity : BaseActivity() {
@@ -14,6 +15,7 @@ class Onboarding2Activity : BaseActivity() {
 
         val skipButton = findViewById<TextView>(R.id.text_view1)
         skipButton.setOnClickListener {
+            setPrefs()
             navigateToMainScreen()
         }
 
@@ -24,6 +26,11 @@ class Onboarding2Activity : BaseActivity() {
             )
             startActivity(intent)
         }
+    }
+
+    private fun setPrefs() {
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        prefs.edit() { putBoolean("onboarding_shown", true) }
     }
 
     private fun navigateToMainScreen() {

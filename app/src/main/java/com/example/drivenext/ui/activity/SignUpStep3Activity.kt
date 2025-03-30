@@ -5,21 +5,25 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.drivenext.R
 import com.example.drivenext.data.User
 import com.example.drivenext.viewmodel.UserViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.core.content.edit
+import com.bumptech.glide.Glide
 
 class SignUpStep3Activity : AppCompatActivity() {
 
     private lateinit var editTextLicenseNumber: EditText
     private lateinit var editTextIssueDate: EditText
     private lateinit var btnUploadLicense: ImageButton
+    private lateinit var layout_add_lissphoto: ConstraintLayout
+    private lateinit var layout_add_passphoto: ConstraintLayout
     private lateinit var btnUploadPassport: ImageButton
     private lateinit var btnNext: Button
     private lateinit var btnBack: ImageButton
@@ -45,10 +49,12 @@ class SignUpStep3Activity : AppCompatActivity() {
         btnNext = findViewById(R.id.btn_next)
         btnBack = findViewById(R.id.back_button)
         btnAvatar = findViewById(R.id.btn_avatar)
+        layout_add_lissphoto = findViewById(R.id.layout_add_lissphoto)
+        layout_add_passphoto = findViewById(R.id.layout_add_passphoto)
 
         editTextIssueDate.setOnClickListener { showDatePicker() }
-        btnUploadLicense.setOnClickListener { selectImage(REQUEST_LICENSE_PHOTO) }
-        btnUploadPassport.setOnClickListener { selectImage(REQUEST_PASSPORT_PHOTO) }
+        layout_add_lissphoto.setOnClickListener { selectImage(REQUEST_LICENSE_PHOTO) }
+        layout_add_passphoto.setOnClickListener { selectImage(REQUEST_PASSPORT_PHOTO) }
         btnAvatar.setOnClickListener { selectImage(REQUEST_AVATAR_PHOTO) }
         btnBack.setOnClickListener { finish() }
 
@@ -83,10 +89,23 @@ class SignUpStep3Activity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && data != null) {
+            val uri = data.data ?: return
             when (requestCode) {
-                REQUEST_LICENSE_PHOTO -> licensePhotoUri = data.data
-                REQUEST_PASSPORT_PHOTO -> passportPhotoUri = data.data
-                REQUEST_AVATAR_PHOTO -> avatarPhotoUri = data.data
+                REQUEST_LICENSE_PHOTO -> {
+                    licensePhotoUri = uri
+                    btnUploadLicense.setImageResource(R.drawable.ic_uploaded) // ✅ заменить иконку
+                }
+                REQUEST_PASSPORT_PHOTO -> {
+                    passportPhotoUri = uri
+                    btnUploadPassport.setImageResource(R.drawable.ic_uploaded) // ✅ заменить иконку
+                }
+                REQUEST_AVATAR_PHOTO -> {
+                    avatarPhotoUri = uri
+                    Glide.with(this)
+                        .load(uri)
+                        .circleCrop()
+                        .into(btnAvatar)
+                }
             }
         }
     }
@@ -143,7 +162,7 @@ class SignUpStep3Activity : AppCompatActivity() {
 
     private fun saveAuthToken(token: String) {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        prefs.edit().putString("access_token", token).apply()
+        prefs.edit() { putString("access_token", token) }
     }
 
     private fun generateToken(email: String): String {

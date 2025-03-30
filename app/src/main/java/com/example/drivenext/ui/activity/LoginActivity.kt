@@ -9,9 +9,13 @@ import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import com.example.drivenext.R
 import com.example.drivenext.viewmodel.UserViewModel
+import androidx.core.content.edit
+import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+
 
 class LoginActivity : BaseActivity() {
 
@@ -21,10 +25,11 @@ class LoginActivity : BaseActivity() {
     private lateinit var googleLoginButton: Button
     private lateinit var registerTextView: TextView
     private lateinit var passwordVisibilityToggle: ImageView
-
     private var isPasswordVisible = false
     private var email: String = ""
     private var password: String = ""
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 1001
 
     private val userViewModel: UserViewModel by viewModels()
 
@@ -32,9 +37,8 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         // ✅ Проверяем сохранённый токен
-        if (getAuthToken() != null) {
-            goToMain()
-            return
+        when {
+            getAuthToken() == true -> goToMain()
         }
 
         setContentView(R.layout.activity_login)
@@ -57,9 +61,38 @@ class LoginActivity : BaseActivity() {
             login(email, password)
         }
 
-        googleLoginButton.setOnClickListener { loginWithGoogle() }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        googleLoginButton.setOnClickListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+
         registerTextView.setOnClickListener { navigateToRegister() }
         passwordVisibilityToggle.setOnClickListener { togglePasswordVisibility() }
+
+
+
+        val forgotPassTextView: TextView = findViewById(R.id.forget_pass_textview)
+        forgotPassTextView.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Пожалуйста, введите ваш email", Toast.LENGTH_SHORT).show()
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Введите корректный email", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Инструкция отправлена на\n$email",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     private val textWatcher = object : TextWatcher {
@@ -99,11 +132,36 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun loginWithGoogle() {
-        // Здесь должен быть Google Sign-In
-        val fakeToken = generateTokenForUser("google_user")
-        saveAuthToken(fakeToken)
-        goToMain()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val email = account.email ?: ""
+                val password = "google_auth"
+
+                // Проверка: есть ли пользователь в базе
+                userViewModel.authenticate(email, password).observe(this) { user ->
+                    if (user != null) {
+                        // ✅ Пользователь уже существует — вход
+                        saveAuthToken(generateTokenForUser(email))
+                        goToMain()
+                    } else {
+                        // 🆕 Новый пользователь — отправляем на шаг 2 регистрации
+                        val intent = Intent(this, SignUpStep2Activity::class.java).apply {
+                            putExtra("email", email)
+                            putExtra("password", password)
+                        }
+                        startActivity(intent)
+                    }
+                }
+            } catch (e: ApiException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Ошибка Google входа: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun navigateToRegister() {
@@ -137,12 +195,13 @@ class LoginActivity : BaseActivity() {
     // ✅ Сохранение токена
     private fun saveAuthToken(token: String) {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        prefs.edit().putString("access_token", token).apply()
+        prefs.edit() { putString("access_token", token) }
     }
 
     // ✅ Получение токена
-    private fun getAuthToken(): String? {
-        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        return prefs.getString("access_token", null)
+    private fun getAuthToken(): Boolean? {
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", null)
+        return accessToken.isNullOrBlank()
     }
 }

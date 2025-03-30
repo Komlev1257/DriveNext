@@ -22,13 +22,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun navigateNextScreen() {
-        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        var accessToken = sharedPreferences.getString("access_token", null)
-        accessToken = "str"
-        val nextActivity = if (accessToken.isNullOrEmpty()) {
-            Onboarding1Activity::class.java
-        } else {
-            Onboarding1Activity::class.java
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val accessToken = sharedPreferences.getString("access_token", null)
+        val onboardingShown = sharedPreferences.getBoolean("onboarding_shown", false)
+        val nextActivity = when {
+            !onboardingShown -> Onboarding1Activity::class.java
+            !accessToken.isNullOrBlank() -> GettingStartedActivity::class.java
+            else -> MainActivity::class.java
         }
 
         startActivity(Intent(this, nextActivity))

@@ -5,6 +5,7 @@ import com.example.drivenext.R
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.edit
 
 
 class Onboarding3Activity : BaseActivity() {
@@ -14,16 +15,23 @@ class Onboarding3Activity : BaseActivity() {
 
         val skipButton = findViewById<TextView>(R.id.text_view1)
         skipButton.setOnClickListener {
+            setPrefs()
             navigateToMainScreen()
         }
 
         findViewById<View>(R.id.button_1).setOnClickListener {
+            setPrefs()
             val intent = Intent(
                 this@Onboarding3Activity,
                 GettingStartedActivity::class.java
             )
             startActivity(intent)
         }
+    }
+
+    private fun setPrefs() {
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        prefs.edit() { putBoolean("onboarding_shown", true) }
     }
 
     private fun navigateToMainScreen() {

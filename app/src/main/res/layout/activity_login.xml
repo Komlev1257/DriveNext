@@ -145,6 +145,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/forget_pass_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 app:layout_constraintStart_toStartOf="parent"
