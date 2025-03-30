@@ -202,6 +202,6 @@ class LoginActivity : BaseActivity() {
     private fun getAuthToken(): Boolean? {
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val accessToken = sharedPreferences.getString("access_token", null)
-        return accessToken.isNullOrBlank()
+        return !accessToken.isNullOrBlank()
     }
 }
