@@ -5,6 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "cars")
 data class Car(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0, // автоинкрементируемый id
+
     val model: String,
     val brand: String,
     val pricePerDay: Int,

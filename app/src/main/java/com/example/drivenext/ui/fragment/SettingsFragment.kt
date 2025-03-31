@@ -35,7 +35,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         SettingsItem.Profile(
                             name = "${user.firstName} ${user.lastName}",
                             email = user.email,
-                            avatarPath = user.profilePic // путь из базы
+                            avatarPath = user.profilePic
                         ),
                         SettingsItem.Option(R.drawable.ic_bookings, "Мои бронирования"),
                         SettingsItem.Option(R.drawable.ic_theme, "Тема"),

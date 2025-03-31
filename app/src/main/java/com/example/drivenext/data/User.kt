@@ -15,7 +15,7 @@ data class User(
     val gender: String,
     val licenceNumber: String,
     val licenceDate: String,
-    val profilePic: String,
+    var profilePic: String,
     val licencePic: String,
     val passportPic: String
 )
