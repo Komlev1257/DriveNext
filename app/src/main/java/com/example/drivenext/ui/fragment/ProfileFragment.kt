@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,8 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.drivenext.R
 import com.example.drivenext.viewmodel.UserViewModel
 import android.widget.LinearLayout
-import android.widget.Toast
-import com.example.drivenext.ui.activity.LoginActivity
+import com.example.drivenext.ui.activity.GettingStartedActivity
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -29,7 +27,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        userEmail = prefs.getString("email", null)
+        userEmail = prefs.getString("user_email", null)
 
         avatarButton = view.findViewById(R.id.btn_avatar)
 
@@ -61,9 +59,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
+        val backButton: ImageButton = view.findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         logoutBtn.setOnClickListener {
             prefs.edit().clear().apply()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+            val intent = Intent(requireContext(), GettingStartedActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
@@ -79,7 +82,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     it, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
 
-                // Обновляем в БД
                 userEmail?.let { email ->
                     userViewModel.getUserByEmail(email).observe(viewLifecycleOwner) { user ->
                         user?.let { currentUser ->

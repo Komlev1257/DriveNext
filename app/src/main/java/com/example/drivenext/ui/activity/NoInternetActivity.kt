@@ -17,7 +17,7 @@ class NoInternetActivity : AppCompatActivity() {
 
         retryButton.setOnClickListener {
             if (isNetworkAvailable()) {
-                finish() // Закрываем экран и возвращаемся назад
+                finish()
             }
         }
     }

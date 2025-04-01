@@ -36,7 +36,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ✅ Проверяем сохранённый токен
+        // Проверяем сохранённый токен
         when {
             getAuthToken() == true -> goToMain()
         }
@@ -145,11 +145,11 @@ class LoginActivity : BaseActivity() {
                 // Проверка: есть ли пользователь в базе
                 userViewModel.authenticate(email, password).observe(this) { user ->
                     if (user != null) {
-                        // ✅ Пользователь уже существует — вход
+                        // Пользователь уже существует — вход
                         saveAuthToken(generateTokenForUser(email), email)
                         goToMain()
                     } else {
-                        // 🆕 Новый пользователь — отправляем на шаг 2 регистрации
+                        // Новый пользователь — отправляем на шаг 2 регистрации
                         val intent = Intent(this, SignUpStep2Activity::class.java).apply {
                             putExtra("email", email)
                             putExtra("password", password)
@@ -187,12 +187,12 @@ class LoginActivity : BaseActivity() {
         finish()
     }
 
-    // ✅ Генерация "токена"
+    // Генерация "токена"
     private fun generateTokenForUser(email: String): String {
         return email.hashCode().toString() + System.currentTimeMillis().toString()
     }
 
-    // ✅ Сохранение токена
+    // Сохранение токена
     private fun saveAuthToken(token: String, email: String) {
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         prefs.edit {
@@ -202,7 +202,7 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    // ✅ Получение токена
+    // Получение токена
     private fun getAuthToken(): Boolean? {
         val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         val accessToken = sharedPreferences.getString("access_token", null)

@@ -14,11 +14,11 @@ class SettingsItemDecoration(
     ) {
         val position = parent.getChildAdapterPosition(view)
 
-        // Первый элемент — профиль
+        // Профиль
         if (position == 0) {
             outRect.bottom = spacingSmall
         } else {
-            // После конкретных пунктов делаем большой отступ
+            // После конкретных пунктов отступ
             if (position == 1 || position == 4) {
                 outRect.bottom = spacingLarge
             } else {

@@ -19,7 +19,6 @@ class SignUpStep2Activity : BaseActivity() {
     private lateinit var radioFemale: RadioButton
     private lateinit var btnNext: View
 
-    // Данные из шага 1
     private var email: String? = null
     private var password: String? = null
 

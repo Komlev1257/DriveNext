@@ -41,6 +41,7 @@ class SettingsAdapter(
         val item = items[position]
         if (holder is ProfileViewHolder) {
             holder.bind(item as SettingsItem.Profile)
+            holder.itemView.setOnClickListener { onItemClick(item) }
         } else if (holder is OptionViewHolder) {
             holder.bind(item as SettingsItem.Option)
             holder.itemView.setOnClickListener { onItemClick(item) }

@@ -38,7 +38,6 @@ class LoadingFragment : Fragment() {
             .into(gifView)
 
 
-        // Задержка 2 секунды
         Handler(Looper.getMainLooper()).postDelayed({
             openSearchFragment()
         }, 2000)

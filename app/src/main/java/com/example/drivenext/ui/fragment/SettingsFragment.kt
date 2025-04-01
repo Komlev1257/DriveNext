@@ -51,7 +51,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                                 Toast.makeText(requireContext(), "Нажали: ${item.label}", Toast.LENGTH_SHORT).show()
                             }
                             is SettingsItem.Profile -> {
-                                Toast.makeText(requireContext(), "Профиль: ${item.name}", Toast.LENGTH_SHORT).show()
+                                parentFragmentManager.beginTransaction()
+                                    .replace(R.id.fragment_container, ProfileFragment())
+                                    .addToBackStack(null)
+                                    .commit()
                             }
                         }
                     }

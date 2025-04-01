@@ -13,9 +13,8 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash) // Твой XML-файл
+        setContentView(R.layout.activity_splash)
 
-        // Запускаем таймер на 2 секунды
         Handler(Looper.getMainLooper()).postDelayed({
             navigateNextScreen()
         }, 2000)
@@ -32,6 +31,6 @@ class SplashActivity : AppCompatActivity() {
         }
 
         startActivity(Intent(this, nextActivity))
-        finish() // Закрываем экран загрузки
+        finish()
     }
 }

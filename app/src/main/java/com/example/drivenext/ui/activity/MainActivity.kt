@@ -18,7 +18,7 @@ class MainActivity : BaseActivity() {
 
         bottomNav = findViewById(R.id.bottom_navigation)
 
-        // По умолчанию открываем HomeFragment и обновляем иконки
+        // По умолчанию открываем HomeFragment
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment())

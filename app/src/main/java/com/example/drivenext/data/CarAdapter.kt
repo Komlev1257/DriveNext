@@ -38,7 +38,6 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         holder.fuel.text = car.fuelType
         holder.image.setImageResource(car.imageResId)
 
-        // Кнопки можно обработать позже
         holder.bookButton.setOnClickListener {
             Toast.makeText(holder.itemView.context, "Забронировано: ${car.model}", Toast.LENGTH_SHORT).show()
         }

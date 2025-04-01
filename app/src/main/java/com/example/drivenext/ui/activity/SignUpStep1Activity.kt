@@ -37,7 +37,7 @@ class SignUpStep1Activity : BaseActivity() {
 
         nextButton.setOnClickListener {
             if (validateFields()) {
-                // ✅ Передаём email и пароль на второй шаг
+                // Передаём email и пароль на второй шаг
                 val intent = Intent(this, SignUpStep2Activity::class.java).apply {
                     putExtra("email", emailEditText.text.toString().trim())
                     putExtra("password", passwordEditText.text.toString().trim())
