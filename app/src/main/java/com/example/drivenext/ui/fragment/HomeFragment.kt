@@ -36,7 +36,12 @@ class HomeFragment : Fragment(R.layout.fragment_homepage) {
         })
 
         carViewModel.allCars.observe(viewLifecycleOwner) { cars ->
-            recyclerView.adapter = CarAdapter(cars)
+            recyclerView.adapter = CarAdapter(cars) { carId ->
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         val editSearch = view.findViewById<EditText>(R.id.edit_search)
@@ -57,7 +62,6 @@ class HomeFragment : Fragment(R.layout.fragment_homepage) {
                 false
             }
         }
-
     }
 
     private fun initCarsIfNeeded() {
@@ -66,10 +70,10 @@ class HomeFragment : Fragment(R.layout.fragment_homepage) {
 
         if (!alreadyInitialized) {
             val starterCars = listOf(
-                Car(model="S 500 Sedan", brand="Mercedes-Benz", pricePerDay=2200, transmission="М/T", fuelType="Бензин", imageResId=R.drawable.ic_iris),
-                Car(model="S 500 Sedan", brand="Mercedes-Benz", pricePerDay=2800, transmission="A/T", fuelType="Дизель", imageResId=R.drawable.ic_iris),
-                Car(model="S 500 Sedan", brand="Mercedes-Benz", pricePerDay=2400, transmission="М/T", fuelType="Дизель", imageResId=R.drawable.ic_iris),
-                Car(model="S 500 Sedan", brand="Mercedes-Benz", pricePerDay=2500, transmission="A/T", fuelType="Бензин", imageResId=R.drawable.ic_iris)
+                Car(model = "S 500 Sedan", brand = "Mercedes-Benz", pricePerDay = 2200, transmission = "М/T", fuelType = "Бензин", address = "TEST", description = "Test", imageResId = R.drawable.ic_iris),
+                Car(model = "S 500 Sedan", brand = "Mercedes-Benz", pricePerDay = 2200, transmission = "М/T", fuelType = "Бензин", address = "TEST", description = "Test", imageResId = R.drawable.ic_iris),
+                Car(model = "S 500 Sedan", brand = "Mercedes-Benz", pricePerDay = 2200, transmission = "М/T", fuelType = "Бензин", address = "TEST", description = "Test", imageResId = R.drawable.ic_iris),
+                Car(model = "S 500 Sedan", brand = "Mercedes-Benz", pricePerDay = 2200, transmission = "М/T", fuelType = "Бензин", address = "TEST", description = "Test", imageResId = R.drawable.ic_iris)
             )
 
             carViewModel.insertAll(starterCars)

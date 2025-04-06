@@ -23,4 +23,8 @@ class CarRepository(private val carDao: CarDao) {
     suspend fun deleteAllCars() {
         carDao.deleteAll()
     }
+
+    suspend fun getCarById(id: Int): Car? {
+        return carDao.getCarById(id)
+    }
 }

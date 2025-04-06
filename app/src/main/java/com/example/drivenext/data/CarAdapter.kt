@@ -3,14 +3,14 @@ package com.example.drivenext.data
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivenext.R
 
-class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
+class CarAdapter(
+    private val cars: List<Car>,
+    private val onDetailClick: (Int) -> Unit
+) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
     class CarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val model: TextView = view.findViewById(R.id.text_model)
@@ -43,7 +43,7 @@ class CarAdapter(private val cars: List<Car>) : RecyclerView.Adapter<CarAdapter.
         }
 
         holder.detailButton.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Детали: ${car.model}", Toast.LENGTH_SHORT).show()
+            onDetailClick(car.id) // 👈 передаём id
         }
     }
 

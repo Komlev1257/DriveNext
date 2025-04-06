@@ -33,4 +33,13 @@ class CarViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteAllCars() = viewModelScope.launch {
         repository.deleteAllCars()
     }
+
+    fun getCarById(id: Int): LiveData<Car?> {
+        val result = MutableLiveData<Car?>()
+        viewModelScope.launch {
+            result.postValue(repository.getCarById(id))
+        }
+        return result
+    }
+
 }

@@ -15,7 +15,6 @@ import com.example.drivenext.viewmodel.CarViewModel
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val carViewModel: CarViewModel by viewModels()
-    private lateinit var adapter: CarAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,22 +38,26 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 it.brand.contains(query, ignoreCase = true) ||
                         it.model.contains(query, ignoreCase = true)
             }
-            adapter = CarAdapter(filtered)
-            recyclerView.adapter = adapter
+
+            recyclerView.adapter = CarAdapter(filtered) { carId ->
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         buttonBack.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment())
-                .commit()
+            parentFragmentManager.popBackStack()
         }
     }
 
     companion object {
         fun newInstance(query: String): SearchFragment {
             val fragment = SearchFragment()
-            val args = Bundle()
-            args.putString("search_query", query)
+            val args = Bundle().apply {
+                putString("search_query", query)
+            }
             fragment.arguments = args
             return fragment
         }

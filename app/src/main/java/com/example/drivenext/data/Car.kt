@@ -13,5 +13,7 @@ data class Car(
     val pricePerDay: Int,
     val transmission: String,
     val fuelType: String,
-    val imageResId: Int
+    val imageResId: Int,
+    val address: String,
+    val description: String
 )
