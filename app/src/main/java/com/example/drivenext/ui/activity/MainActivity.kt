@@ -1,6 +1,7 @@
 package com.example.drivenext.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.drivenext.R
@@ -42,6 +43,10 @@ class MainActivity : BaseActivity() {
                 true
             } ?: false
         }
+    }
+
+    fun setBottomNavVisibility(isVisible: Boolean) {
+        bottomNav.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     private fun updateBottomIcons(selectedItemId: Int) {

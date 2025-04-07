@@ -2,6 +2,7 @@ package com.example.drivenext.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,16 +31,25 @@ class CarDetailsFragment : Fragment(R.layout.fragment_car_details) {
         val descriptionText = view.findViewById<TextView>(R.id.text_description_value)
         val priceText = view.findViewById<TextView>(R.id.text_price)
         val backButton = view.findViewById<ImageButton>(R.id.back_button)
+        val rentButton = view.findViewById<Button>(R.id.button_book)
 
         // Назад
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
+        // Переход на фрагмент аренды
+        rentButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CarRentFragment.newInstance(carId))
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Загрузка машины по id
         carViewModel.getCarById(carId).observe(viewLifecycleOwner) { car ->
             car?.let {
-                modelText.text = "${it.model}"
+                modelText.text = it.model
                 locationText.text = it.address ?: "Адрес не указан"
                 descriptionText.text = it.description ?: "Описание отсутствует"
                 priceText.text = "${it.pricePerDay}₽/день"

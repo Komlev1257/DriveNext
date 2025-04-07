@@ -39,12 +39,21 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         it.model.contains(query, ignoreCase = true)
             }
 
-            recyclerView.adapter = CarAdapter(filtered) { carId ->
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
-                    .addToBackStack(null)
-                    .commit()
-            }
+            recyclerView.adapter = CarAdapter(
+                filtered,
+                onDetailClick = { carId ->
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
+                        .addToBackStack(null)
+                        .commit()
+                },
+                onBookClick = { carId ->
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, CarRentFragment.newInstance(carId))
+                        .addToBackStack(null)
+                        .commit()
+                }
+            )
         }
 
         buttonBack.setOnClickListener {

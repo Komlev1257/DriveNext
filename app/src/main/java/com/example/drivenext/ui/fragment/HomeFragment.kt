@@ -36,12 +36,21 @@ class HomeFragment : Fragment(R.layout.fragment_homepage) {
         })
 
         carViewModel.allCars.observe(viewLifecycleOwner) { cars ->
-            recyclerView.adapter = CarAdapter(cars) { carId ->
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
-                    .addToBackStack(null)
-                    .commit()
-            }
+            recyclerView.adapter = CarAdapter(
+                cars,
+                onDetailClick = { carId ->
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, CarDetailsFragment.newInstance(carId))
+                        .addToBackStack(null)
+                        .commit()
+                },
+                onBookClick = { carId ->
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, CarRentFragment.newInstance(carId))
+                        .addToBackStack(null)
+                        .commit()
+                }
+            )
         }
 
         val editSearch = view.findViewById<EditText>(R.id.edit_search)

@@ -9,7 +9,8 @@ import com.example.drivenext.R
 
 class CarAdapter(
     private val cars: List<Car>,
-    private val onDetailClick: (Int) -> Unit
+    private val onDetailClick: (Int) -> Unit,
+    private val onBookClick: (Int) -> Unit
 ) : RecyclerView.Adapter<CarAdapter.CarViewHolder>() {
 
     class CarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,17 +34,17 @@ class CarAdapter(
         val car = cars[position]
         holder.model.text = car.model
         holder.brand.text = car.brand
-        holder.price.text = "${car.pricePerDay}Р"
+        holder.price.text = "${car.pricePerDay}₽"
         holder.transmission.text = car.transmission
         holder.fuel.text = car.fuelType
         holder.image.setImageResource(car.imageResId)
 
         holder.bookButton.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Забронировано: ${car.model}", Toast.LENGTH_SHORT).show()
+            onBookClick(car.id) // Переход на оформление аренды
         }
 
         holder.detailButton.setOnClickListener {
-            onDetailClick(car.id) // 👈 передаём id
+            onDetailClick(car.id) // Переход на детали авто
         }
     }
 
